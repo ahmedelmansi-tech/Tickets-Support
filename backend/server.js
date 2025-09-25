@@ -2,14 +2,19 @@ const log = console.log;
 
 const express = require("express");
 const app = express();
+const colors = require("colors");
 const dotenv = require("dotenv").config();
 const PORT = process.env.PORT || 6666;
 // ERROR HANDLERFUNC MIDDELWARE
 const { errorHandler } = require("./middleware/errorMiddleware");
 
-app.get("/", (req, res) => {
-  res.json({ SMS: "hello" });
-});
+//---------CONECTION FUNC---------------------------
+const connectDB = require("./config/db");
+connectDB();
+
+// app.get("/", (req, res) => {
+//   res.json({ SMS: "hello" });
+// });
 
 // PARSING BODY REQ
 app.use(express.json());
