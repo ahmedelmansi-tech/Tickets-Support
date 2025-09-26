@@ -2,10 +2,19 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModels");
 
+//----------------- JWT --------------------------------//
+const jwt = require("jsonwebtoken");
+
+// jwt.sign({} , secret , {options (expiresIn)} )
+
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+};
+
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
-  // (1) Vaidates if the name,ps,emai written
+  // (1) Validates if the name,ps,emai written
   if (!name || !password || !email) {
     // create Error Handler instead
     // return res.status(400).json({
@@ -36,20 +45,50 @@ const registerUser = asyncHandler(async (req, res) => {
   // (5) now the user created everything is good and something is created  201
 
   if (newUser) {
-    res.status(201).json(newUser);
+    res.status(201).json({
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      token: generateToken(newUser._id),
+    });
   } else {
     res.status(400);
     throw new Error("incorrect data ");
   }
-  res.json("REGISTER  USER ROUTE  .....");
 });
 
-//--------------------------------------------------------
-const gettingUser = asyncHandler(async (req, res) => {
-  res.json("GETTING USERS .....");
+//--------------------------LOG IN------------------------------
+const signIn = asyncHandler(async (req, res) => {
+  const { email, password, name } = req.body;
+
+  // For DEBUGGING
+
+  console.log(`EMAIL > ${email}`);
+  console.log(`PS > ${password}`);
+
+  // Cmpare the password by the hashed PS to br Authe
+
+  const loginUser = await User.findOne({ email });
+
+  // For DEBUGGING
+  // console.log(await bcrypt.compare(password, loginUser.password));
+  // console.log(loginUser);
+
+  // ATHU
+  if (loginUser && (await bcrypt.compare(password, loginUser.password))) {
+    res.status(200).json({
+      sms: `welcome back ${loginUser.name}`,
+      email: loginUser.email,
+      name: loginUser.name,
+      token: generateToken(loginUser._id),
+    });
+  } else {
+    res.status(401);
+    throw new Error("user/password might be wrong");
+  }
 });
 
 module.exports = {
   registerUser,
-  gettingUser,
+  signIn,
 };
