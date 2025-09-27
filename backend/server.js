@@ -18,7 +18,7 @@ connectDB();
 
 // PARSING BODY REQ
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 // ROUTES
 app.use("/api/users", require("./Routes/userRoutes"));

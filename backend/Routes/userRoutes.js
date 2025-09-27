@@ -8,10 +8,10 @@ const {
 
 // PROTECTION MIDDELWARE
 
-const { protection } = require("../middleware/authMiddelware");
+const { protect } = require("../middleware/authMiddelware");
 
 router.post("/", registerUser);
 router.post("/login", signIn);
-router.get("/me", protection, getMe);
+router.get("/me", protect, getMe);
 
 module.exports = router;

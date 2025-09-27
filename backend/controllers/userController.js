@@ -104,9 +104,9 @@ const signIn = asyncHandler(async (req, res) => {
 // @access  private
 const getMe = asyncHandler(async (req, res) => {
   const theCurrentUser = {
-    id: req.user._id,
-    name: req.user.name,
-    email: req.user.email,
+    id: req.loggedUser._id,
+    name: req.loggedUser.name,
+    email: req.loggedUser.email,
   };
   res.status(200).send(theCurrentUser);
 });
