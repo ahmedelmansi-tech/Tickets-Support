@@ -4,12 +4,16 @@ const User = require("../models/userModels");
 
 //----------------- JWT --------------------------------//
 const jwt = require("jsonwebtoken");
-
 // jwt.sign({} , secret , {options (expiresIn)} )
-
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
+
+//-----------REGISTER NEW USER ---------------------------//
+
+// @des new user
+// @route  api/users
+// @access  public
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -57,7 +61,12 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-//--------------------------LOG IN------------------------------
+//--------------------------LOG IN---------------------------//
+
+// @des login user
+// @route  api/users/login
+// @access  public
+
 const signIn = asyncHandler(async (req, res) => {
   const { email, password, name } = req.body;
 
@@ -88,7 +97,22 @@ const signIn = asyncHandler(async (req, res) => {
   }
 });
 
+//------------------ ME -------------------------------------//
+
+// @des current User
+// @route  api/users/me (/me)
+// @access  private
+const getMe = asyncHandler(async (req, res) => {
+  const theCurrentUser = {
+    id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+  };
+  res.status(200).send(theCurrentUser);
+});
+
 module.exports = {
   registerUser,
   signIn,
+  getMe,
 };
