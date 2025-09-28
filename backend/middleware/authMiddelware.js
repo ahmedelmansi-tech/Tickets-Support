@@ -16,7 +16,7 @@ const protect = asyncHandler(async (req, res, next) => {
 
       // GET USER FROM Token And put it as a property in the REQ
       req.loggedUser = await User.findById(decoded.id).select("-password");
-      console.log(req.loggedUser);
+      console.log(decoded);
       next();
     } else {
       res.status(401);
