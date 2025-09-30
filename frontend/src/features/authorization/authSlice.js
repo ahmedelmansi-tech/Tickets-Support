@@ -1,15 +1,33 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   user: null,
+  isLoading: false,
   isError: false,
   isSuccess: false,
-  isLoading: false,
-  message: "",
+  message: null,
 };
 
-export const authorizationSlice = createSlice({
-  name: "auth",
+// ASYNCE FUNCTION FOR REGISTRATION
+
+export const registration = createAsyncThunk(
+  "auth/register",
+  async (userInfo, thunkAPI) => {
+    console.log(userInfo);
+  }
+);
+
+// ASYNCE FUNCTION FOR LOGIN
+
+export const loggingIn = createAsyncThunk(
+  "auth/login",
+  async (userInfo, thunkAPI) => {
+    console.log(userInfo);
+  }
+);
+
+const authorizationSlice = createSlice({
+  name: "verification",
   initialState,
   reducers: {},
   extraReducers: (builder) => {},

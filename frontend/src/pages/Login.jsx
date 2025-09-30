@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FaSignInAlt } from "react-icons/fa";
+
+//------------REDUX STUFF-------------------//
+import { useDispatch, useSelector } from "react-redux";
+import { loggingIn } from "../features/authorization/authSlice";
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -8,7 +13,10 @@ const Login = () => {
   });
 
   const { email, password } = formData;
-
+  const dispatch = useDispatch();
+  const { user, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state.auth
+  );
   //--------------FUNCTIONS-----------------------//
 
   // (1)
@@ -27,6 +35,13 @@ const Login = () => {
 
   const submitAction = (e) => {
     e.preventDefault();
+
+    const visitor = {
+      email,
+      password,
+    };
+
+    dispatch(loggingIn(visitor));
 
     toast.success("Welcome", {
       autoClose: 1000,

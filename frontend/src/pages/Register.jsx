@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FaUser } from "react-icons/fa";
+
+//----------REDUX STUFF---------------//
+import { useDispatch, useSelector } from "react-redux";
+import { registration } from "../features/authorization/authSlice";
+
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -10,6 +15,12 @@ const Register = () => {
   });
 
   const { name, email, password, password2 } = formData;
+
+  const dispatch = useDispatch();
+
+  const { user, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state.auth
+  );
 
   //--------------FUNCTIONS-----------------------//
 
@@ -35,6 +46,14 @@ const Register = () => {
         autoClose: 800,
         hideProgressBar: true,
       });
+    } else {
+      const registerUser = {
+        name,
+        email,
+        password,
+      };
+
+      dispatch(registration(registerUser));
     }
 
     // toast.success("Welcome", {
@@ -48,7 +67,7 @@ const Register = () => {
       <section className="heading">
         <h1>
           <FaUser />
-          Register
+          Register {user}
         </h1>
         <p>Create an account</p>
       </section>
