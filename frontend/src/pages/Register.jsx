@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FaUser } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom";
 //----------REDUX STUFF---------------//
 import { useDispatch, useSelector } from "react-redux";
-import { registration } from "../features/authorization/authSlice";
+import { registerProcess } from "../features/authorization/authSlice";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +17,7 @@ const Register = () => {
   const { name, email, password, password2 } = formData;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { user, isLoading, isSuccess, isError, message } = useSelector(
     (state) => state.auth
@@ -53,13 +54,13 @@ const Register = () => {
         password,
       };
 
-      dispatch(registration(registerUser));
+      dispatch(registerProcess(registerUser));
+      toast.success(`Welcome ${registerUser.name}`, {
+        autoClose: 1000,
+        hideProgressBar: true,
+      });
+      navigate("/");
     }
-
-    // toast.success("Welcome", {
-    //   autoClose: 1000,
-    //   hideProgressBar: true,
-    // });
   };
 
   return (
@@ -67,7 +68,7 @@ const Register = () => {
       <section className="heading">
         <h1>
           <FaUser />
-          Register {user}
+          Register
         </h1>
         <p>Create an account</p>
       </section>
