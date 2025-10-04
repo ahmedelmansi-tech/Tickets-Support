@@ -32,7 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const userExistes = await User.findOne({ email });
   if (userExistes) {
     res.status(400);
-    throw new Error("User Already Exists");
+    throw new Error("❌ User Already Exists");
   }
 
   // (3) Hashing the PS

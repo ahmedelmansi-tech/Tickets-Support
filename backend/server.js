@@ -4,7 +4,10 @@ const express = require("express");
 const app = express();
 const colors = require("colors");
 const dotenv = require("dotenv").config();
+const cors = require("cors");
 const PORT = process.env.PORT || 6666;
+
+app.use(cors());
 // ERROR HANDLERFUNC MIDDELWARE
 const { errorHandler } = require("./middleware/errorMiddleware");
 

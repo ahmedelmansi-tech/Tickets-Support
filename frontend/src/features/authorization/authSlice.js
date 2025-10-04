@@ -20,14 +20,17 @@ export const registerProcess = createAsyncThunk(
     // console.log(await authService.register(theRegisterUser));
 
     try {
+      console.log("data sent is :", theRegisterUser);
       return await authService.register(theRegisterUser);
     } catch (error) {
       const message =
-        (error.response.data &&
-          error.response &&
-          error.response.data.caution) ||
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
         error.message ||
         error.toString();
+
+      console.log(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -41,7 +44,15 @@ export const loggingIn = createAsyncThunk("auth/login", async (_, thunkAPI) => {
 const authorizationSlice = createSlice({
   name: "verification",
   initialState,
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      state.isError = false;
+      state.isSuccess = false;
+      state.isLoading = false;
+      state.user = null;
+      state.message = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerProcess.pending, (state) => {
@@ -51,16 +62,17 @@ const authorizationSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
-        localStorage.setItem("user", JSON.stringify(action.payload));
+        // localStorage.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(registerProcess.rejected, (state, action) => {
         state.isLoading = false;
         state.user = null;
         state.isError = true;
         state.message = action.payload;
-        localStorage.removeItem("user");
+        // localStorage.removeItem("user");
       });
   },
 });
 
+export const { reset } = authorizationSlice.actions;
 export default authorizationSlice.reducer;

@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 //----------REDUX STUFF---------------//
 import { useDispatch, useSelector } from "react-redux";
-import { registerProcess } from "../features/authorization/authSlice";
+import { registerProcess, reset } from "../features/authorization/authSlice";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -23,6 +23,21 @@ const Register = () => {
     (state) => state.auth
   );
 
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      toast.success(`Welcome ${user.name}`, {
+        autoClose: 1000,
+        hideProgressBar: true,
+      });
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [isError, isLoading, isSuccess, message, navigate, dispatch]);
   //--------------FUNCTIONS-----------------------//
 
   // (1)
@@ -53,15 +68,10 @@ const Register = () => {
         email,
         password,
       };
-
       dispatch(registerProcess(registerUser));
-      toast.success(`Welcome ${registerUser.name}`, {
-        autoClose: 1000,
-        hideProgressBar: true,
-      });
-      navigate("/");
     }
   };
+  //------------------USE EFFECT-------------------//
 
   return (
     <>

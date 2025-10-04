@@ -1,10 +1,12 @@
 const errorHandler = (error, req, res, next) => {
+  console.log("🔥 ERROR HANDLER TRIGGERED 🔥");
+
   const statusCode = res.statusCode ? res.statusCode : 500;
 
   res.status(statusCode);
 
   res.json({
-    caution: error.message,
+    message: error.message,
     stack: process.env.NODE_ENV === "production" ? null : error.stack,
   });
 };
