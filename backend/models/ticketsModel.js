@@ -22,7 +22,7 @@ const ticketSchema = mongoose.Schema(
       default: "new",
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Tickets", ticketSchema);
