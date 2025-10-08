@@ -25,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // ROUTES
 app.use("/api/users", require("./Routes/userRoutes"));
+app.use("/api/tickets", require("./Routes/ticketsRoutes"));
 app.use(errorHandler);
 
 // LISTINING TO THE PORT

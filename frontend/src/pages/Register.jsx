@@ -19,26 +19,53 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user, isLoading, isSuccess, isError, message } = useSelector(
+  const { user, isLoading, isSuccessRegister, isError, message } = useSelector(
     (state) => state.auth
   );
+
+  // useEffect(() => {
+  //   if (isError) {
+  //     toast.error(message);
+  //   }
+
+  //   if (isSuccess || user) {
+  //     toast.success(`Welcome ${user.name}`, {
+  //       autoClose: 1000,
+  //       hideProgressBar: true,
+  //     });
+  //     navigate("/");
+  //   }
+  //   dispatch(reset());
+  // }, [isError, isLoading, isSuccess, message, navigate, user, dispatch]);
+  //--------------FUNCTIONS-----------------------//
 
   useEffect(() => {
     if (isError) {
       toast.error(message);
+      dispatch(reset());
     }
 
-    if (isSuccess || user) {
+    if (isSuccessRegister && user) {
       toast.success(`Welcome ${user.name}`, {
         autoClose: 1000,
         hideProgressBar: true,
       });
-      navigate("/");
-    }
 
-    dispatch(reset());
-  }, [isError, isLoading, isSuccess, message, navigate, dispatch]);
-  //--------------FUNCTIONS-----------------------//
+      // استنى شوية صغيرين بعد النجاح
+      setTimeout(() => {
+        navigate("/");
+        dispatch(reset());
+      }, 300);
+    }
+  }, [
+    isError,
+    isSuccessRegister,
+    user,
+    isLoading,
+    message,
+    navigate,
+    dispatch,
+  ]);
 
   // (1)
   const handleChanging = (e) => {

@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { FaSignInAlt } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom";
 //------------REDUX STUFF-------------------//
 import { useDispatch, useSelector } from "react-redux";
 import { loggingIn } from "../features/authorization/authSlice";
 
+//--------Components
+import Spinner from "../components/Spinner";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -14,8 +16,9 @@ const Login = () => {
 
   const { email, password } = formData;
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, isLoading, isSuccess, isError, message } = useSelector(
+  const { user, isLoading, isSuccessLogin, isError, message } = useSelector(
     (state) => state.auth
   );
   //--------------FUNCTIONS-----------------------//
@@ -32,8 +35,24 @@ const Login = () => {
     });
   };
 
-  // (2)
+  useEffect(() => {
+    if (isSuccessLogin || user) {
+      navigate("/");
+      toast.success("Welcome", {
+        autoClose: 1000,
+        hideProgressBar: true,
+      });
+    }
 
+    if (isError) {
+      toast.error(message, {
+        autoClose: 500,
+        hideProgressBar: true,
+      });
+    }
+  }, [isSuccessLogin, user, isLoading, isError, message, navigate]);
+
+  // (2)
   const submitAction = (e) => {
     e.preventDefault();
 
@@ -41,16 +60,12 @@ const Login = () => {
       email,
       password,
     };
-
     dispatch(loggingIn(visitor));
-
-    toast.success("Welcome", {
-      autoClose: 1000,
-      hideProgressBar: true,
-    });
   };
 
-  return (
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <>
       <section className="heading">
         <h1>

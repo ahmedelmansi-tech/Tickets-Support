@@ -1,5 +1,5 @@
 import axios from "axios";
-const ENDPOINT = "http://localhost:2525/api/users";
+const ENDPOINT = "/api/users";
 // register user
 const register = async (dataSentWithTheReq) => {
   const response = await axios.post(ENDPOINT, dataSentWithTheReq, {
@@ -10,38 +10,27 @@ const register = async (dataSentWithTheReq) => {
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }
-
-  console.log(await response.data);
-
   return response.data;
 };
 
-// const register = async (dataSentWithTheReq) => {
-//   const response = await fetch(API_URL, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(dataSentWithTheReq),
-//   });
+//LOGOUT
+const logOut = () => localStorage.removeItem("user");
 
-//   if (!response.ok) {
-//     // لو السيرفر رجع Error Status زي 400 أو 500
-//     const errorData = await response.json();
-//     throw new Error(errorData.message || "Something went wrong");
-//   }
+// LOG IN
 
-//   const data = await response.json();
-
-//   if (data) {
-//     localStorage.setItem("user", JSON.stringify(data));
-//   }
-
-//   return data;
-// };
+const logIn = async (loginUser) => {
+  const res = await axios.post(`${ENDPOINT}/login`, loginUser, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await res.data;
+};
 
 const authService = {
   register,
+  logOut,
+  logIn,
 };
 
 export default authService;
