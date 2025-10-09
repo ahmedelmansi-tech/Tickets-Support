@@ -4,9 +4,14 @@ import { ToastContainer, toast } from "react-toastify";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import NewTicket from "./pages/NewTicket";
 
 //------------Components---------------//
 import Header from "./components/Header";
+
+//---------PRIVATE ROUTE------------//
+
+import PrivateRoute from "./components/PrivateRoute";
 function App() {
   return (
     <>
@@ -17,6 +22,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/new-ticket" element={<PrivateRoute />}>
+              <Route path="/new-ticket" element={<NewTicket />} />
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>

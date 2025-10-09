@@ -100,7 +100,11 @@ const deleteSingleTicket = expressAsyncHandler(async (req, res) => {
     throw new Error("Not Authorized");
   }
 
+  //   .remove() method deprecated  V6 >=
   await specialDeletedTicket.deleteOne();
+
+  //-------------Or Another Method-------------------------------//
+  // await Tickets.findByIdAndDelete(req.params.id)
 
   res
     .status(200)

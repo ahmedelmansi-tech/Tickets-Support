@@ -9,11 +9,11 @@ const Home = () => {
         <p>Please Choose From Option Below</p>
       </section>
 
-      <Link path={"/new-ticket"} className="btn btn-reverse btn-block">
+      <Link to={"/new-ticket"} className="btn btn-reverse btn-block">
         <FaQuestionCircle />
         Create New Ticket
       </Link>
-      <Link path="/tickets" className="btn btn-block">
+      <Link to="/tickets" className="btn btn-block">
         <FaTicketAlt />
         View My Tickets
       </Link>
