@@ -34,7 +34,7 @@ export const registerProcess = createAsyncThunk(
 // ASYNC FUNC FOR LOGOUT
 
 export const loggingOut = createAsyncThunk("auth/log-out", async () => {
-  await authService.logOut();
+  authService.logOut();
 });
 
 // ASYNCE FUNCTION FOR LOGIN

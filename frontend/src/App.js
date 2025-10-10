@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 //-------------Pages-------------------//
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NewTicket from "./pages/NewTicket";
-
+import AllTickets from "./pages/AllTickets";
 //------------Components---------------//
 import Header from "./components/Header";
 
@@ -24,6 +24,9 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/new-ticket" element={<PrivateRoute />}>
               <Route path="/new-ticket" element={<NewTicket />} />
+            </Route>
+            <Route path="/tickets" element={<PrivateRoute />}>
+              <Route path="/tickets" element={<AllTickets />} />
             </Route>
           </Routes>
         </div>

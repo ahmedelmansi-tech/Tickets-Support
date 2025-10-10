@@ -17,7 +17,6 @@ const register = async (dataSentWithTheReq) => {
 const logOut = () => localStorage.removeItem("user");
 
 // LOG IN
-
 const logIn = async (loginUser) => {
   const res = await axios.post(`${ENDPOINT}/login`, loginUser, {
     headers: {

@@ -1,20 +1,48 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { reset, createNewTicket } from "../features/tickets/ticketsSlice";
+import Spinner from "../components/Spinner";
+import BackButton from "../components/BackButton";
 const NewTicket = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // best way to prevent unused rerenders
   const { user } = useSelector((state) => state.auth);
   const { name, email } = user;
 
   const [product, setProduct] = useState(" ");
   const [description, setDescription] = useState("");
 
+  const { isPending, isSuccess, messsage, isError } = useSelector(
+    (state) => state.tickets
+  );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(messsage);
+    }
+
+    if (isSuccess) {
+      navigate("/tickets");
+      dispatch(reset());
+    }
+  }, [isError, messsage, isSuccess, dispatch, isPending, navigate]);
+
   const submitAction = (e) => {
     e.preventDefault();
 
-    console.log("Submit >");
+    dispatch(createNewTicket({ product, description }));
   };
+
+  if (isPending) {
+    return <Spinner />;
+  }
 
   return (
     <>
+      <BackButton url="/" />
       <section className="heading">
         <h1>Create New Ticket </h1>
         <p>Please Fill in the Form Below</p>

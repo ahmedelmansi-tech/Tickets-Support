@@ -15,8 +15,8 @@ const createNewTickets = expressAsyncHandler(async (req, res) => {
   const { id } = req.loggedUser;
 
   const newTicket = await Tickets.create({
-    product: "Macbook",
-    description: "Old Ram",
+    product,
+    description,
     user: id,
   });
   res.status(201).json({ message: "Ticket is Created", newTicket });
