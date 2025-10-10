@@ -10,8 +10,8 @@ import NewTicket from "./pages/NewTicket";
 import Header from "./components/Header";
 
 //---------PRIVATE ROUTE------------//
-
 import PrivateRoute from "./components/PrivateRoute";
+
 function App() {
   return (
     <>
