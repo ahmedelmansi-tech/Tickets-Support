@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import ticketsServices from "./ticketsService";
-import { FaSadCry } from "react-icons/fa";
 const initialState = {
   tickets: [],
   ticket: {},

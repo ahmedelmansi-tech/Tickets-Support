@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
+// Linking Notes Route to Tickets
+const noteRouter = require("./noteRoutes");
+
+router.use("/:id/notes", noteRouter);
+
 const {
   getTickets,
   getSingleTicket,
@@ -10,8 +15,9 @@ const {
 } = require("../controllers/ticketsController");
 
 //----------protection Func------------//
-
 const { protect } = require("../middleware/authMiddelware");
+
+// --------- Routing ________<Tickets>_________//
 
 router.route("/").get(protect, getTickets).post(protect, createNewTickets);
 router
