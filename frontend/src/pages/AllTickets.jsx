@@ -24,7 +24,7 @@ const AllTickets = () => {
         dispatch(reset());
       }
     };
-  }, [dispatch, isSuccess]);
+  }, [dispatch, isSuccess, isError]);
 
   if (isPending) {
     return <Spinner />;

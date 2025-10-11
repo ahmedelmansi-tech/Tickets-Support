@@ -30,7 +30,7 @@ export const createNewTicket = createAsyncThunk(
   }
 );
 
-// Create New User All Tickets
+// Get All Tickets
 export const getAllTickets = createAsyncThunk(
   "tickets/getAll",
   async (_, thunkAPI) => {
@@ -38,6 +38,27 @@ export const getAllTickets = createAsyncThunk(
 
     try {
       return await ticketsServices.getAll(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// ----- Get <One> Ticket
+
+export const getSingleTicket = createAsyncThunk(
+  "tickets/singleticket",
+  async (ticketId, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+    try {
+      return await ticketsServices.getOneTicket(ticketId, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -86,6 +107,19 @@ export const ticketsSlice = createSlice({
       })
       .addCase(getAllTickets.rejected, (state, action) => {
         state.isSuccess = false;
+        state.message = action.payload;
+      })
+      .addCase(getSingleTicket.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(getSingleTicket.fulfilled, (state, action) => {
+        state.isPending = false;
+        state.isSuccess = true;
+        state.ticket = action.payload;
+      })
+      .addCase(getSingleTicket.rejected, (state, action) => {
+        state.isSuccess = false;
+        state.isError = true;
         state.message = action.payload;
       });
   },

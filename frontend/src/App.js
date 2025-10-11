@@ -6,11 +6,13 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NewTicket from "./pages/NewTicket";
 import AllTickets from "./pages/AllTickets";
+
 //------------Components---------------//
 import Header from "./components/Header";
 
 //---------PRIVATE ROUTE------------//
 import PrivateRoute from "./components/PrivateRoute";
+import Ticket from "./pages/Ticket";
 
 function App() {
   return (
@@ -27,6 +29,9 @@ function App() {
             </Route>
             <Route path="/tickets" element={<PrivateRoute />}>
               <Route path="/tickets" element={<AllTickets />} />
+            </Route>
+            <Route path="/tickets/:id" element={<PrivateRoute />}>
+              <Route path="/tickets/:id" element={<Ticket />} />
             </Route>
           </Routes>
         </div>

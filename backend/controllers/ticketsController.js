@@ -55,6 +55,7 @@ const getSingleTicket = expressAsyncHandler(async (req, res) => {
     throw new Error("Not Authorized");
   }
 
+  console.log(req.params.id);
   const specialTicket = await Tickets.findById(req.params.id);
 
   //   Check is the Ticket Doesn't Exist
