@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import ticketsServices from "./ticketsService";
+import { FaSadCry } from "react-icons/fa";
 const initialState = {
   tickets: [],
   ticket: {},
@@ -52,13 +53,32 @@ export const getAllTickets = createAsyncThunk(
 );
 
 // ----- Get <One> Ticket
-
 export const getSingleTicket = createAsyncThunk(
   "tickets/singleticket",
   async (ticketId, thunkAPI) => {
     const token = thunkAPI.getState().auth.user.token;
     try {
       return await ticketsServices.getOneTicket(ticketId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// ----- Close <One> Ticket
+export const closeTicket = createAsyncThunk(
+  "tickets/closeTicket",
+  async (ticketId, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+    try {
+      return await ticketsServices.closeTicket(ticketId, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -121,6 +141,12 @@ export const ticketsSlice = createSlice({
         state.isSuccess = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(closeTicket.fulfilled, (state, action) => {
+        state.isPending = false;
+        state.tickets.map((ticket) =>
+          ticket._id === action.payload._id ? (ticket.state = "Closed") : ticket
+        );
       });
   },
 });
